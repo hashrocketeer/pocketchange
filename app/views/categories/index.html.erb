@@ -7,26 +7,49 @@ var paper = Raphael(50, 100, 1000, 500);
 <% @categories.each do |category| %>
 <%= link_to 'Edit' , edit_category_path(category) %>
   <script>
+	//Storing data into variables
 	var dollars = '<%= category.dollars %>';
 	var order = '<%= category.cat_number %>';
 	
+	//Generating text
 	var name = paper.text(order*75 + 20, 220, '<%= category.cat_name %>');
 	var amount = paper.text(order*75 + 20, 230, '<%= category.dollars %>');
 	var edit = paper.text(order*75 + 20, 240, 'edit');	
 	
-	var rect<%= category.cat_number %>start = paper.rect(order*75, 200 - dollars/10, 51, dollars/10 + 10, 5).attr({fill: "#000", opacity: .15, stroke: "#000"});
+	//These are the bars: Starting Balance, Current Balance, New Pocket Amount
+	//Starting Balance is static (for now)
+	//Current Balance is draggable up and down
+	//New Pocket Amount only appears when you drag the Current Balance down
+	//...and once it appears, it is draggable in all directions
+	
+	//STARTING BALANCE
+	var rect<%= category.cat_number %>startingBalance = paper.rect(order*75, 200 - dollars/10, 51, dollars/10 + 10, 5).attr({fill: "#000", opacity: .15, stroke: "#000"});
+	
+	//Make it glow a little bit.
+	rect<%= category.cat_number %>startingBalance.glow({width: 2, opacity: .1});
+	
+	//NEW POCKET AMOUNT
+	var rect<%= category.cat_number %>toPocket = paper.rect(order*75, 200 - dollars/10, 50, 0, 5).attr({fill: "#33CCCC", opacity: 1, stroke: "#33CCCC"});
+	
+	//CURRENT BALANCE
   	var rect<%= category.cat_number %> = paper.rect(order*75, 200 - dollars/10, 50, dollars/10 + 10, 5).attr({fill: "#006633", opacity: .75, stroke: "#336633"});
 
+	//This is the first dragging functionality
+	//This allows the user to drag on the current balance to create
+	//the New Pocket Amount
 	var start = function () {
     // storing original coordinates
 		height<%= category.cat_number %> = rect<%= category.cat_number %>.attr("height");
     	rect<%= category.cat_number %>.oy = rect<%= category.cat_number %>.attr("y");
 		rect<%= category.cat_number %>.attr("fill", "003300");
+		heightP<%= category.cat_number %> = rect<%= category.cat_number %>toPocket.attr("height");
+		rectP<%= category.cat_number %>.oy = rect<%= category.cat_number %>toPocket.attr("y");
   	},
   
 	move = function (dx, dy) {
     // move will be called with dx and dy
     	rect<%= category.cat_number %>.attr({height: height<%= category.cat_number %> - dy, y: rect<%= category.cat_number %>.oy + dy});
+		rect<%= category.cat_number %>toPocket.attr({height: heightP<%= category.cat_number %> + dy});
   	},
   	
 	up = function () {
@@ -34,7 +57,26 @@ var paper = Raphael(50, 100, 1000, 500);
    		rect<%= category.cat_number %>.attr("fill", "#006633");
 	};
 
-	rect<%= category.cat_number %>.drag(move, start, up);</script>
+	rect<%= category.cat_number %>.drag(move, start, up);
+	
+	//This is the second dragging functionality
+	//This allows the user to drag the New Pocket Amount into the Pocket
+	var startP = function () {
+    // storing original coordinates
+		rect<%= category.cat_number %>toPocket.ox = rect<%= category.cat_number %>toPocket.attr("x");
+		rect<%= category.cat_number %>toPocket.oy = rect<%= category.cat_number %>toPocket.attr("y");
+  	},
+  
+	moveP = function (dx, dy) {
+    // move will be called with dx and dy
+    	rect<%= category.cat_number %>toPocket.attr({x: rect<%= category.cat_number %>toPocket.ox + dx, y: rect<%= category.cat_number %>toPocket.oy + dy});
+  	},
+  	
+	upP = function (){};
+
+	rect<%= category.cat_number %>toPocket.drag(moveP, startP, upP);
+	
+	</script>
 <% end %>
 </table>
 
