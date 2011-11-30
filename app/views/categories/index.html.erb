@@ -1,0 +1,42 @@
+<h1>Listing categories</h1>
+<script>
+// Creates canvas
+var paper = Raphael(50, 100, 1000, 500);
+</script>
+
+<% @categories.each do |category| %>
+<%= link_to 'Edit' , edit_category_path(category) %>
+  <script>
+	var dollars = '<%= category.dollars %>';
+	var order = '<%= category.cat_number %>';
+	
+	var name = paper.text(order*75 + 20, 220, '<%= category.cat_name %>');
+	var amount = paper.text(order*75 + 20, 230, '<%= category.dollars %>');
+	var edit = paper.text(order*75 + 20, 240, 'edit');	
+	
+  	var rect<%= category.cat_number %> = paper.rect(order*75, 200 - dollars/10, 50, dollars/10 + 10, 5).attr("fill", "#006633");
+
+	var start = function () {
+    // storing original coordinates
+		height<%= category.cat_number %> = rect<%= category.cat_number %>.attr("height");
+    	rect<%= category.cat_number %>.oy = rect<%= category.cat_number %>.attr("y");
+		rect<%= category.cat_number %>.attr("fill", "003300");
+  	},
+  
+	move = function (dx, dy) {
+    // move will be called with dx and dy
+    	rect<%= category.cat_number %>.attr({height: height<%= category.cat_number %> - dy, y: rect<%= category.cat_number %>.oy + dy});
+  	},
+  	
+	up = function () {
+   	// restoring state
+   		rect<%= category.cat_number %>.attr("fill", "#006633");
+	};
+
+	rect<%= category.cat_number %>.drag(move, start, up);</script>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Category', new_category_path %>

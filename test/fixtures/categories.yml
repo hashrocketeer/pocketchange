@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  cat_name: MyString
+  dollars: 1
+  cat_number: 1
+
+two:
+  cat_name: MyString
+  dollars: 1
+  cat_number: 1
