@@ -1,0 +1,12 @@
+<h1>Listing categories</h1>
+
+<script>var paper = Raphael(50, 100, 1000, 2000);</script>
+
+<% @categories.each do |category| %>
+  <%= link_to 'Edit' , edit_category_path(category) %>
+  <script>
+    drawCategory('<%= category.cat_name %>', <%= category.starting_balance %>, <%= category.current_balance %>, <%= category.pocket_balance %>, <%= category.graph_position_number %>);
+  </script>
+<% end %>
+
+<%= link_to 'New Category', new_category_path %>

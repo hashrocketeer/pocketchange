@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Cat name:</b>
+  <%= @category.cat_name %>
+</p>
+
+<p>
+  <b>Starting balance:</b>
+  <%= @category.starting_balance %>
+</p>
+
+<p>
+  <b>Current balance:</b>
+  <%= @category.current_balance %>
+</p>
+
+<p>
+  <b>Pocket balance:</b>
+  <%= @category.pocket_balance %>
+</p>
+
+<p>
+  <b>Change balance:</b>
+  <%= @category.change_balance %>
+</p>
+
+<p>
+  <b>Graph position number:</b>
+  <%= @category.graph_position_number %>
+</p>
+
+
+<%= link_to 'Edit', edit_category_path(@category) %> |
+<%= link_to 'Back', categories_path %>

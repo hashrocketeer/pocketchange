@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  cat_name: MyString
+  starting_balance: 1
+  current_balance: 1
+  pocket_balance: 1
+  change_balance: 1
+  graph_position_number: 1
+
+two:
+  cat_name: MyString
+  starting_balance: 1
+  current_balance: 1
+  pocket_balance: 1
+  change_balance: 1
+  graph_position_number: 1
