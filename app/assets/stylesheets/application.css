@@ -7,3 +7,7 @@
 */
 
 body {background-image:url('backgroundpattern.png');}
+
+#text {
+  margin-top: 500px
+}
