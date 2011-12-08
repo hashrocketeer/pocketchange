@@ -1,12 +1,39 @@
-<h1>Listing categories</h1>
 
-<script>var paper = Raphael(50, 100, 1000, 2000);</script>
 
+<script>var paper = Raphael(0, 0, 3000, 475);</script>
+<% current_total = 0 %>
+<% starting_total = 0 %>
 <% @categories.each do |category| %>
+  <% current_total = current_total + category.current_balance %>
+  <% starting_total = starting_total + category.starting_balance %>
   <%= link_to 'Edit' , edit_category_path(category) %>
+  <%= link_to 'Destroy', category, :confirm => 'Are you sure?', :method => :delete %>
+  <input type="text" id="balance" name="balance" class="balance"/>
   <script>
-    drawCategory('<%= category.cat_name %>', <%= category.starting_balance %>, <%= category.current_balance %>, <%= category.pocket_balance %>, <%= category.graph_position_number %>);
+    categories.push('<%= category.cat_name %>', <%= category.starting_balance %>, <%= category.current_balance %>, <%= category.pocket_balance %>, <%= category.graph_position_number %>,<%= current_total %>, <%= starting_total %>);
+    drawCategory('<%= category.cat_name %>', <%= category.starting_balance %>, <%= category.current_balance %>, <%= category.pocket_balance %>, <%= category.graph_position_number %>,<%= current_total %>, <%= starting_total %>);
   </script>
 <% end %>
+<p><%= current_total %> of <%= starting_total %></p>
+<script>
+  //currentTotalText.show();
+  divider.show();
+  divider.glow({width: 25, opacity: .1});
+  
+  bigBorder = paper.rect(0, 0, 3000, 475).attr({opacity: .4});
+  bigBorder.glow({width: 25, opacity: .1});
+  
+  startingTotalBar.show();
+  startingTotalBar.glow({width: 2, opacity: .1});
+  currentTotalBar.show();
+  
+  var pocketBackground = paper.image("assets/graph2.jpg", divider.attr("x"), 0, 400, 500).attr({opacity: 1});
+  pocketBackground.toBack();
+  
+  //var bluejeanTriangle = paper.image("assets/bluejeanTriangle_c.png", divider.attr("x") - 60, 150, 130, 200);
+  
+  //newTransaction(divider.attr("x") + 50, 50);
+</script>    
 
-<%= link_to 'New Category', new_category_path %>
+<p><%= link_to 'New Category', new_category_path %></p>
+
