@@ -138,15 +138,18 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
       pMoneyAmount.animate({opacity: 0}, 100, "easeInOut",function(){pMoneyAmount.hide()});
       pocket_balance = pocket_balance + current_balance - Math.round(rect.attr("height")*3);
       drawPocketBubble(category_name, pocket_balance, rectToPocket.attr("x") + 25, rectToPocket.attr("y"));
-      
-      //This updates the current balance in the categories array
-      categories.splice(order*7 - 5, 1, Math.round(rect.attr("height")*3));
-      
-      //This updates the pocket balance in the categories array
-      categories.splice(order*7 - 4, 1, pocket_balance);
-      
-      console.log(categories);
-      
+
+      // Grab the category that just changed
+      var category = categories[order-1];
+
+      // Update the category's balance
+      category.current_balance = Math.round(rect.attr("height")*3);
+
+      // Update the category's pocket balance
+      category.pocket_balance =  pocket_balance;
+
+      // Send the updated information to the server
+      sendUpdate(category);
       //pocketBalanceText = paper.text(rectToPocket.attr("x") + 25, rectToPocket.attr("y"), pocket_balance).attr("font-size", "28");
       //pocketBalanceText.attr({opacity: 0, fill: "#fff"});
       //pocketBalanceText.animate({opacity: 1}, 400, "easeInOut");
@@ -155,6 +158,24 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
       //pocketBalanceText.toFront();
       };
   };
+
+  var sendUpdate = function(category) {
+    // Callback for after the server responds
+    var onSuccess = function(data) {
+      console.log(data);
+    };
+
+    // Our hand-rolled parameter to post
+    // Ends up looking like:
+    //
+    // category[pocket_balance]=123
+    // category[current_balance]=321
+    // ... etc ...
+    var changes = { category: category, _method: 'put' }
+
+    // Post the changes, jQuery-style
+    $.post('/categories/'+category.id, changes, onSuccess, 'json');
+  }
 
   rectToPocket.drag(moveP, startP, upP);
   pMoneyAmount.drag(moveP, startP, upP);
