@@ -120,12 +120,12 @@ littleTriangle.click(function(){
 
   var moveSpendDollar = function (dx, dy) {
     // move will be called with dx and dy
-    spendDollarBubble.attr({r: Math.max(spendDollarBubble.r + dx/6, 25)});
+    spendDollarBubble.attr({r: Math.min(Math.max(spendDollarBubble.r + dx/6, 25), pocket_balance + 25)});
     spendDollarText.attr({text: Math.round(spendDollarBubble.attr("r") - 25)});
     
     //Math is not right here. To be fixed!
-    pocketBalanceCircle.attr({r: Math.max(pocketBalanceCircle.r - (dx/6)*.75, 0)});
-    pocketBalanceText.attr({text: Math.max(pocket_balance - Math.round(spendDollarBubble.attr("r") - 25), 0)});
+    pocketBalanceCircle.attr({r: Math.min(Math.max(pocketBalanceCircle.r - (dx/6)*.75, 25), pocket_balance*.75)});
+    pocketBalanceText.attr({text: Math.min(Math.max(pocket_balance - Math.round(spendDollarBubble.attr("r") - 25), 0), pocket_balance)});
     
     //categoryNameText.attr({x: Math.min(categoryNameText.ox + dx), divider.attr("x") + 400), y: Math.min(Math.max(pocket_balance*.75 - 20, categoryNameText.oy + dy), 475 - pocket_balance*.75 - 20)})
     //pocketBalanceCircle.attr({cx: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceCircle.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), cy: Math.min(Math.max(pocket_balance*.75, pocketBalanceCircle.oy + dy), 475 - pocket_balance*.75)});
@@ -137,4 +137,5 @@ littleTriangle.click(function(){
     
   };
     spendDollarBubble.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
+    spendDollarText.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
 }
