@@ -141,7 +141,9 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
       rectToPocket.animate({opacity: 0}, 100, "easeInOut", function(){rectToPocket.hide()});
       pMoneyAmount.animate({opacity: 0}, 100, "easeInOut",function(){pMoneyAmount.hide()}); 
       pocket_balance = pocket_balance + current_balance - Math.round(rect.attr("height")*3);
-      drawPocketBubble(category_name, pocket_balance, rectToPocket.attr("x") + 25, rectToPocket.attr("y"), order);
+      drawPocketBubble(category_name, pocket_balance, order, rectToPocket.attr("x") + 25, rectToPocket.attr("y"), order);
+      pocket_x = rectToPocket.attr("x") + 25;
+      pocket_y = rectToPocket.attr("y");
 
       // Grab the category that just changed
       var category = categories[order-1];
@@ -151,15 +153,13 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
 
       // Update the category's pocket balance
       category.pocket_balance =  pocket_balance;
+      
+      //Update the category's pocket bubble x and y coordinates
+      category.pocket_x = pocket_x;
+      category.pocket_y = pocket_y;
 
       // Send the updated information to the server
       sendUpdate(category);
-      //pocketBalanceText = paper.text(rectToPocket.attr("x") + 25, rectToPocket.attr("y"), pocket_balance).attr("font-size", "28");
-      //pocketBalanceText.attr({opacity: 0, fill: "#fff"});
-      //pocketBalanceText.animate({opacity: 1}, 400, "easeInOut");
-      //pocketBalanceCircle = paper.circle(rectToPocket.attr("x") + 25, rectToPocket.attr("y")).attr({fill: "#333", stroke: "#333"})
-      //pocketBalanceCircle.animate({r: pocket_balance*.75}, 1000, "elastic");
-      //pocketBalanceText.toFront();
       };
   };
 

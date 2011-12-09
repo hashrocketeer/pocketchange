@@ -18,7 +18,7 @@
 
 <% @categories.each do |pocket_bubble| %>
   <script>
-    if(<%= pocket_bubble.pocket_balance %> > 0){drawPocketBubble('<%= pocket_bubble.cat_name %>', <%= pocket_bubble.pocket_balance %>, 400, 150);}
+    if(<%= pocket_bubble.pocket_balance %> > 0){drawPocketBubble('<%= pocket_bubble.cat_name %>', <%= pocket_bubble.pocket_balance %>, <%= pocket_bubble.graph_position_number %>, <%= pocket_bubble.pocket_x %>, <%= pocket_bubble.pocket_y %>);}
   </script>
 <% end %>
 <p><%= current_total %> of <%= starting_total %></p>

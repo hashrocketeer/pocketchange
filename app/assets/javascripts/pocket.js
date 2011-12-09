@@ -1,4 +1,4 @@
-function drawPocketBubble(category_name, pocket_balance, startingCX, startingCY){
+function drawPocketBubble(category_name, pocket_balance, order, startingCX, startingCY){
 //----------------------------------------//
 //--------------POCKET-------------------//
 //---------------------------------------//
@@ -51,8 +51,37 @@ var movePocketCircle = function (dx, dy) {
 };
 
 var upPocketCircle = function (){
+  pocket_x = pocketBalanceCircle.attr("cx");
+  pocket_y = pocketBalanceCircle.attr("cy");
   
-};
+  // Grab the category that just changed
+  var category = categories[order-1];
+  
+  //Update the category's pocket bubble x and y coordinates
+  category.pocket_x = pocket_x;
+  category.pocket_y = pocket_y;
+
+  // Send the updated information to the server
+  sendUpdate(category);
+  };
+  
+  var sendUpdate = function(category) {
+    // Callback for after the server responds
+    var onSuccess = function(data) {
+      console.log(data);
+    };
+
+    // Our hand-rolled parameter to post
+    // Ends up looking like:
+    //
+    // category[pocket_balance]=123
+    // category[current_balance]=321
+    // ... etc ...
+    var changes = { category: category, _method: 'put' }
+
+    // Post the changes, jQuery-style
+    $.post('/categories/'+category.id, changes, onSuccess, 'json');
+  };
 
 pocketBalanceCircle.drag(movePocketCircle, startPocketCircle, upPocketCircle);
 pocketBalanceText.drag(movePocketCircle, startPocketCircle, upPocketCircle);
