@@ -18,6 +18,8 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
   divider = paper.rect(order*75 + 125, 0, 1, 500).attr({opacity: .4});
   divider.hide();
   
+  
+  
   //--------------------------------------//	
   //These are the 5 bars: Starting Balance, Current Balance, New Pocket Money, Starting Total, Current Total
   //Starting Balance is static (for now)
@@ -71,7 +73,9 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
     //This is for cases where money has already been moved
     if(rectToPocket.attr("x") > divider.attr("x")){
       rectToPocket.show();
-      rectToPocket.attr({x: rect.attr("x"), y: rect.oy, opacity: .75, height: 0})
+      rectToPocket.attr({x: rect.attr("x"), y: rect.oy, opacity: .75, height: 0});
+      
+      pMoneyAmount.attr({x: rect.attr("x") + 25, y: rect.attr("y") - 15, opacity: 1})
     };
     // New Pocket Money height and Y position
     heightP = rectToPocket.attr("height");
@@ -135,9 +139,9 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
     //... and then all the stuff that submits the changes and updates the balances
     if(rectToPocket.attr("x") > divider.attr("x")){
       rectToPocket.animate({opacity: 0}, 100, "easeInOut", function(){rectToPocket.hide()});
-      pMoneyAmount.animate({opacity: 0}, 100, "easeInOut",function(){pMoneyAmount.hide()});
+      pMoneyAmount.animate({opacity: 0}, 100, "easeInOut",function(){pMoneyAmount.hide()}); 
       pocket_balance = pocket_balance + current_balance - Math.round(rect.attr("height")*3);
-      drawPocketBubble(category_name, pocket_balance, rectToPocket.attr("x") + 25, rectToPocket.attr("y"));
+      drawPocketBubble(category_name, pocket_balance, rectToPocket.attr("x") + 25, rectToPocket.attr("y"), order);
 
       // Grab the category that just changed
       var category = categories[order-1];

@@ -1,5 +1,7 @@
 
-<script>var paper = Raphael(0, 0, 3000, 475);</script>
+<script>var paper = Raphael(0, 0, 3000, 475);
+  var orderArray = [];
+</script>
 <div id="text">
 <% current_total = 0 %>
 <% starting_total = 0 %>
@@ -8,13 +10,17 @@
   <% starting_total = starting_total + category.starting_balance %>
   <%= link_to 'Edit' , edit_category_path(category) %>
   <%= link_to 'Destroy', category, :confirm => 'Are you sure?', :method => :delete %>
-  <input type="text" id="balance" name="balance" class="balance"/>
   <script>
-    categories.push(<%= category.to_json( :only => [ :id, :cat_name, :starting_balance, :current_balance, :pocket_balance ]).html_safe %>);
+    categories.push(<%= category.to_json( :only => [ :id, :cat_name, :starting_balance, :current_balance, :pocket_balance, :pocket_x, :pocket_y ]).html_safe %>);
     drawCategory('<%= category.cat_name %>', <%= category.starting_balance %>, <%= category.current_balance %>, <%= category.pocket_balance %>, <%= category.graph_position_number %>,<%= current_total %>, <%= starting_total %>);
   </script>
 <% end %>
 
+<% @categories.each do |pocket_bubble| %>
+  <script>
+    if(<%= pocket_bubble.pocket_balance %> > 0){drawPocketBubble('<%= pocket_bubble.cat_name %>', <%= pocket_bubble.pocket_balance %>, 400, 150);}
+  </script>
+<% end %>
 <p><%= current_total %> of <%= starting_total %></p>
 
 <script>
