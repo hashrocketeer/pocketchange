@@ -44,10 +44,10 @@ var startPocketCircle = function () {
 
 var movePocketCircle = function (dx, dy) {
   // move will be called with dx and dy
-  categoryNameText.attr({x: Math.max(divider.attr("x") + 2*(pocket_balance*.75), categoryNameText.ox + dx), y: Math.max(pocket_balance*.75 - 20, categoryNameText.oy + dy)})
-  pocketBalanceCircle.attr({cx: Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceCircle.ox + dx), cy: Math.max(pocket_balance*.75, pocketBalanceCircle.oy + dy)});
-  pocketBalanceText.attr({x: Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceText.ox + dx), y: Math.max(pocket_balance*.75, pocketBalanceText.oy + dy)});
-  littleTriangle.attr({x: Math.max(divider.attr("x") + 2*(pocket_balance*.75) - 27, littleTriangle.ox + dx), y: Math.max(pocket_balance*.75, littleTriangle.oy + dy)});
+  categoryNameText.attr({x: Math.min(Math.max(divider.attr("x") + 2*(pocket_balance*.75), categoryNameText.ox + dx), divider.attr("x") + 400), y: Math.min(Math.max(pocket_balance*.75 - 20, categoryNameText.oy + dy), 475 - pocket_balance*.75 - 20)})
+  pocketBalanceCircle.attr({cx: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceCircle.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), cy: Math.min(Math.max(pocket_balance*.75, pocketBalanceCircle.oy + dy), 475 - pocket_balance*.75)});
+  pocketBalanceText.attr({x: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceText.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), y: Math.min(Math.max(pocket_balance*.75, pocketBalanceText.oy + dy), 475 - pocket_balance*.75)});
+  littleTriangle.attr({x: Math.min(Math.max(divider.attr("x") + 2*(pocket_balance*.75) - 27, littleTriangle.ox + dx), divider.attr("x") + 400 - 27), y: Math.min(Math.max(pocket_balance*.75, littleTriangle.oy + dy), 475 - pocket_balance*.75)});
 };
 
 var upPocketCircle = function (){
