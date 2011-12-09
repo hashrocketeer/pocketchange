@@ -1,6 +1,7 @@
 
 <script>var paper = Raphael(0, 0, 3000, 475);
   var orderArray = [];
+  var everythingRightOfBudget = paper.set();
 </script>
 <div id="text">
 <% current_total = 0 %>
@@ -27,6 +28,7 @@
   //currentTotalText.show();
   divider.show();
   divider.glow({width: 25, opacity: .1});
+  everythingRightOfBudget.push(divider);
   
   bigBorder = paper.rect(0, 0, 3000, 475).attr({opacity: .4});
   bigBorder.glow({width: 25, opacity: .1});
@@ -37,14 +39,16 @@
   
   var pocketBackground = paper.image("assets/graph2.jpg", divider.attr("x"), 0, 400, 500).attr({opacity: 1});
   pocketBackground.toBack();
+  everythingRightOfBudget.push(pocketBackground);
   
   var transactionsBackground = paper.image("assets/chalkboard_s.png", divider.attr("x") + 400, 0, 400, 500);
-  //var transactionsBorder = paper.rect(divider.attr("x") + 400, 0, 400, 500)
   transactionsBackground.glow({width: 10, opacity: .5});
+  everythingRightOfBudget.push(transactionsBackground);
   
-  //var bluejeanTriangle = paper.image("assets/bluejeanTriangle_c.png", divider.attr("x") - 60, 150, 130, 200);
-  
-  //newTransaction(divider.attr("x") + 50, 50);
+  //The below code block is a test to try to animate the everythingRightOfBudget set. I don't think it's going to work. I'll have to find another way.
+  //var tempButton = paper.rect(10, 10, 20, 20).attr({fill: "#000"});
+  //tempButton.click(function(){everythingRightOfBudget.animate({x: everythingRightOfBudget.attr("x") + 75}, 1000)});
+  //console.log(everythingRightOfBudget);
 </script>    
 
 <p><%= link_to 'New Category', new_category_path %></p>

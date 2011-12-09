@@ -6,23 +6,29 @@ function drawPocketBubble(category_name, pocket_balance, order, startingCX, star
 var categoryNameText = paper.text(startingCX + pocket_balance*.75, startingCY - 20, category_name).attr("font-size", "14");
 categoryNameText.attr("text-anchor", "start");
 categoryNameText.attr("font-family", "Courier New");
+everythingRightOfBudget.push(categoryNameText);
 
 var pocketBalanceText = paper.text(startingCX, startingCY, pocket_balance).attr("font-size", "28");
 pocketBalanceText.attr({opacity: 0, fill: "#fff", cursor: "move"});
 pocketBalanceText.attr("font-family", "Courier New");
 pocketBalanceText.animate({opacity: 1}, 400, "easeInOut");
+everythingRightOfBudget.push(pocketBalanceText);
 
 var pocketBalanceCircle = paper.circle(startingCX, startingCY, 0).attr({fill: "#333", stroke: "#CCC", cursor: "move"});
-pocketBalanceCircle.animate({r: pocket_balance*.75}, 1000, "elastic");
+pocketBalanceCircle.animate({r: Math.max(pocket_balance*.75, 23)}, 1000, "elastic");
 pocketBalanceText.toFront();
+everythingRightOfBudget.push(pocketBalanceCircle);
 
 var littleTriangle = paper.image("assets/blacktriangle.svg", startingCX + pocket_balance*.75 - 27, startingCY - 7, 35, 35)
+everythingRightOfBudget.push(pocketBalanceCircle);
 
 var spendDollarBubble = paper.circle(pocketBalanceCircle.attr("cx") + 150, pocketBalanceCircle.attr("cy"), 0).attr({fill: "#999", cursor: "e-resize"})
+everythingRightOfBudget.push(spendDollarBubble);
 
 var spendDollarText = paper.text(pocketBalanceCircle.attr("cx") + 150, pocketBalanceCircle.attr("cy"), "0").attr("font-size", "28");
 spendDollarText.attr({opacity: 0, cursor: "e-resize"});
 spendDollarText.attr("font-family", "Courier New");
+everythingRightOfBudget.push(spendDollarText);
 
 //Below is the third dragging functionality
 //This allows the user to drag the New Pocket Money into the Pocket
