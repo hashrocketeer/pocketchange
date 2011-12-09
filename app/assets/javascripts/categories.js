@@ -141,9 +141,11 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
       rectToPocket.animate({opacity: 0}, 100, "easeInOut", function(){rectToPocket.hide()});
       pMoneyAmount.animate({opacity: 0}, 100, "easeInOut",function(){pMoneyAmount.hide()}); 
       pocket_balance = pocket_balance + current_balance - Math.round(rect.attr("height")*3);
-      drawPocketBubble(category_name, pocket_balance, order, rectToPocket.attr("x") + 25, rectToPocket.attr("y"), order);
+      
       pocket_x = rectToPocket.attr("x") + 25;
       pocket_y = rectToPocket.attr("y");
+      
+      drawPocketBubble(category_name, pocket_balance, order, rectToPocket.attr("x") + 25, rectToPocket.attr("y"), order);
 
       // Grab the category that just changed
       var category = categories[order-1];

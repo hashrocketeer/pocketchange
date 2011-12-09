@@ -38,6 +38,10 @@
   var pocketBackground = paper.image("assets/graph2.jpg", divider.attr("x"), 0, 400, 500).attr({opacity: 1});
   pocketBackground.toBack();
   
+  var transactionsBackground = paper.image("assets/chalkboard_s.png", divider.attr("x") + 400, 0, 400, 500);
+  //var transactionsBorder = paper.rect(divider.attr("x") + 400, 0, 400, 500)
+  transactionsBackground.glow({width: 10, opacity: .5});
+  
   //var bluejeanTriangle = paper.image("assets/bluejeanTriangle_c.png", divider.attr("x") - 60, 150, 130, 200);
   
   //newTransaction(divider.attr("x") + 50, 50);

@@ -1,4 +1,4 @@
-function drawPocketBubble(category_name, pocket_balance, order, startingCX, startingCY){
+function drawPocketBubble(category_name, pocket_balance, order, startingCX, startingCY, newOrExisting){
 //----------------------------------------//
 //--------------POCKET-------------------//
 //---------------------------------------//
