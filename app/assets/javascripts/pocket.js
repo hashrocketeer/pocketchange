@@ -102,6 +102,39 @@ littleTriangle.click(function(){
 )
 
 //Drag functionality for spendDollarBubble, allowing the user to adjust the dollar amount by dragging on the bubble
-  //...put code here...//
+  var startSpendDollar = function () {
+    // storing original coordinates
+    
+    //Spend Dollar stuff
+    spendDollarBubble.r = spendDollarBubble.attr("r")
+    spendDollarText.txt = spendDollarText.attr("text")
+    
+    //Pocket Balance stuff
+    categoryNameText.ox = categoryNameText.attr("x");
+    categoryNameText.oy = categoryNameText.attr("y");
+    pocketBalanceCircle.r = pocketBalanceCircle.attr("r");
+    pocketBalanceText.txt = pocketBalanceText.attr("text");
+    littleTriangle.ox = littleTriangle.attr("x");
+    littleTriangle.oy = littleTriangle.attr("y");
+  };
 
+  var moveSpendDollar = function (dx, dy) {
+    // move will be called with dx and dy
+    spendDollarBubble.attr({r: Math.max(spendDollarBubble.r + dx/6, 25)});
+    spendDollarText.attr({text: Math.round(spendDollarBubble.attr("r") - 25)});
+    
+    //Math is not right here. To be fixed!
+    pocketBalanceCircle.attr({r: Math.max(pocketBalanceCircle.r - (dx/6)*.75, 0)});
+    pocketBalanceText.attr({text: Math.max(pocket_balance - Math.round(spendDollarBubble.attr("r") - 25), 0)});
+    
+    //categoryNameText.attr({x: Math.min(categoryNameText.ox + dx), divider.attr("x") + 400), y: Math.min(Math.max(pocket_balance*.75 - 20, categoryNameText.oy + dy), 475 - pocket_balance*.75 - 20)})
+    //pocketBalanceCircle.attr({cx: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceCircle.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), cy: Math.min(Math.max(pocket_balance*.75, pocketBalanceCircle.oy + dy), 475 - pocket_balance*.75)});
+    //pocketBalanceText.attr({x: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceText.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), y: Math.min(Math.max(pocket_balance*.75, pocketBalanceText.oy + dy), 475 - pocket_balance*.75)});
+    //littleTriangle.attr({x: Math.min(Math.max(divider.attr("x") + 2*(pocket_balance*.75) - 27, littleTriangle.ox + dx), divider.attr("x") + 400 - 27), y: Math.min(Math.max(pocket_balance*.75, littleTriangle.oy + dy), 475 - pocket_balance*.75)});
+  };
+
+  var upSpendDollar = function (){
+    
+  };
+    spendDollarBubble.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
 }
