@@ -44,11 +44,6 @@
   var transactionsBackground = paper.image("assets/chalkboard_s.png", divider.attr("x") + 400, 0, 400, 500);
   transactionsBackground.glow({width: 10, opacity: .5});
   everythingRightOfBudget.push(transactionsBackground);
-  
-  //The below code block is a test to try to animate the everythingRightOfBudget set. I don't think it's going to work. I'll have to find another way.
-  //var tempButton = paper.rect(10, 10, 20, 20).attr({fill: "#000"});
-  //tempButton.click(function(){everythingRightOfBudget.animate({x: everythingRightOfBudget.attr("x") + 75}, 1000)});
-  //console.log(everythingRightOfBudget);
 </script>    
 
 <p><%= link_to 'New Category', new_category_path %></p>

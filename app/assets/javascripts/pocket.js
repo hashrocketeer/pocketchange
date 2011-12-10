@@ -30,6 +30,9 @@ spendDollarText.attr({opacity: 0, cursor: "e-resize"});
 spendDollarText.attr("font-family", "Courier New");
 everythingRightOfBudget.push(spendDollarText);
 
+//this var is temporary, to be deleted
+var button = paper.circle(10,10,20).attr({fill: "#fff"});
+
 //Below is the third dragging functionality
 //This allows the user to drag the New Pocket Money into the Pocket
 var startPocketCircle = function () {
@@ -102,6 +105,7 @@ littleTriangle.click(function(){
 )
 
 //Drag functionality for spendDollarBubble, allowing the user to adjust the dollar amount by dragging on the bubble
+
   var startSpendDollar = function () {
     // storing original coordinates
     
@@ -134,8 +138,40 @@ littleTriangle.click(function(){
   };
 
   var upSpendDollar = function (){
-    
   };
-    spendDollarBubble.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
-    spendDollarText.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
+  
+  spendDollarBubble.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
+  spendDollarText.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
+  button.click(makeTransaction);
+  
+    //-------------------------------//
+    
+function makeTransaction(){
+  
+    var startSpendDollar = function () {
+      // storing original coordinates
+      spendDollarBubble.ox = spendDollarBubble.attr("cx");
+      spendDollarBubble.oy = spendDollarBubble.attr("cy");
+      spendDollarText.ox = spendDollarText.attr("x");
+      spendDollarText.oy = spendDollarText.attr("y");
+    };
+
+    var moveSpendDollar = function (dx, dy) {
+      // move will be called with dx and dy
+      spendDollarBubble.attr({cx: spendDollarBubble.ox + dx, cy: spendDollarBubble.oy + dy});
+      spendDollarText.attr({x: spendDollarText.ox + dx, y: spendDollarText.oy + dy});
+      spendDollarBubble.toFront();
+      spendDollarText.toFront();
+    };
+
+    var upSpendDollar = function (){
+      if(spendDollarBubble.attr("cx") > divider.attr("x") + 400){
+        spendDollarBubble.animate({opacity: 0}, 400, "linear");
+        spendDollarText.animate({opacity: 0}, 400, "linear");
+        newTransaction(divider.attr("x") + 450, 50, Math.round(spendDollarBubble.attr("r") - 25));
+        }
+    };
+      //spendDollarBubble.drag(moveSpendToTrans, startSpendToTrans, upSpendToTrans);
+      //spendDollarText.drag(moveSpendToTrans, startSpendToTrans, upSpendToTrans);
+ };   
 }
