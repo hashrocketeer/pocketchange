@@ -39,6 +39,9 @@ everythingRightOfBudget.push(spendLittleTriangle);
 spendDollarSet.push(spendLittleTriangle);
 spendDollarSet.hide();
 
+var centsBubble = paper.circle(pocketBalanceCircle.attr("cx") + 50, pocketBalanceCircle.attr("cy"), 0).attr({fill: "#999", cursor: "e-resize"});
+centsBubble.hide();
+
 //Below is the third dragging functionality
 //This allows the user to drag the New Pocket Money into the Pocket
 var startPocketCircle = function () {
@@ -170,7 +173,11 @@ spendLittleTriangle.click(function(){
     if(spendLittleTriangle.attr("opacity") < 1 && spendDollarBubble.attr("cx") > divider.attr("x") + 400){
       spendDollarBubble.animate({opacity: 0}, 400, "linear");
       spendDollarText.animate({opacity: 0}, 400, "linear");
-      newTransaction(divider.attr("x") + 450, 50, Math.round(spendDollarBubble.attr("r") - 25));
+      newTransaction(divider.attr("x") + 450, 50, Math.round(spendDollarBubble.attr("r") - 25), category_name);
+    }
+    else{
+      centsBubble.show();
+      centsBubble.animate({cx: spendDollarBubble.attr("cx") + spendDollarBubble.attr("r"), cy: spendDollarBubble.attr("cy") + 20, r: 10}, 1000, "elastic");
     }
   };
   
