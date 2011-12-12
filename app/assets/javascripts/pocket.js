@@ -185,7 +185,7 @@ spendLittleTriangle.click(function(){
       spendDollarText.animate({opacity: 0}, 400, "linear");
       centsBubble.animate({opacity: 0}, 400, "linear");
       
-      drawTransaction(divider.attr("x") + 450, 50, Math.round(spendDollarBubble.attr("r") - 25), category_name);
+      drawTransaction(divider.attr("x") + 450, 100, Math.round(spendDollarBubble.attr("r") - 25), category_name);
       
       // Grab the category that just changed
       var category = categories[order-1];

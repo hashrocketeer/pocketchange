@@ -37,13 +37,34 @@
   startingTotalBar.glow({width: 2, opacity: .1});
   currentTotalBar.show();
   
+  var budgetTitleRect = paper.rect(divider.attr("x")/2 - 83, 0, 166, 58, 0).attr({fill: "#003300", opacity: .1, stroke: "#003300"});
+  budgetTitleRect.glow({width: 4, opacity: .08});
+  
+  var budgetTitleText = paper.text(divider.attr("x")/2, 30, "Budget").attr("font-size", "45");
+  budgetTitleText.attr("font-family", "Arial");
+  budgetTitleText.attr("fill", "#006633");
+  
   var pocketBackground = paper.image("assets/graph2.jpg", divider.attr("x"), 0, 400, 500).attr({opacity: 1});
   pocketBackground.toBack();
   everythingRightOfBudget.push(pocketBackground);
   
+  var pocketTitleRect = paper.rect(divider.attr("x") + 117, 0, 166, 58).attr({fill: "#fff", stroke: "#ccc"});
+  pocketTitleRect.glow({width: 20, opacity: .1});
+  
+  var pocketTitleText = paper.text(divider.attr("x") + 200, 30, "Pocket").attr("font-size", "45");
+  pocketTitleText.attr("font-family", "Courier New");
+  pocketTitleText.attr("font-color", "#333");
+  
   var transactionsBackground = paper.image("assets/chalkboard_s.png", divider.attr("x") + 400, 0, 400, 500);
   transactionsBackground.glow({width: 10, opacity: .5});
   everythingRightOfBudget.push(transactionsBackground);
+  
+  var transTitleRect = paper.rect(divider.attr("x") + 480, 0, 240, 58).attr({fill: "#330000", stroke: "#330000", opacity: .5});
+  transTitleRect.glow({width: 20, opacity: .1});
+  
+  var transTitleText = paper.text(divider.attr("x") + 600, 30, "Transactions").attr({fill: "#fff", opacity: .8});
+  transTitleText.attr("font-size", "35");
+  transTitleText.attr("font-family", "Lucida Grande");
 </script>    
 
 <p><%= link_to 'New Category', new_category_path %></p>
