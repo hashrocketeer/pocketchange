@@ -20,18 +20,24 @@ pocketBalanceText.toFront();
 everythingRightOfBudget.push(pocketBalanceCircle);
 
 var littleTriangle = paper.image("assets/blacktriangle.svg", startingCX + pocket_balance*.75 - 27, startingCY - 7, 35, 35)
-everythingRightOfBudget.push(pocketBalanceCircle);
+everythingRightOfBudget.push(littleTriangle);
 
-var spendDollarBubble = paper.circle(pocketBalanceCircle.attr("cx") + 150, pocketBalanceCircle.attr("cy"), 0).attr({fill: "#999", cursor: "e-resize"})
+var spendDollarSet = paper.set();
+
+var spendDollarBubble = paper.circle(pocketBalanceCircle.attr("cx"), pocketBalanceCircle.attr("cy"), 0).attr({fill: "#999", cursor: "e-resize"})
 everythingRightOfBudget.push(spendDollarBubble);
+spendDollarSet.push(spendDollarBubble);
 
-var spendDollarText = paper.text(pocketBalanceCircle.attr("cx") + 150, pocketBalanceCircle.attr("cy"), "0").attr("font-size", "28");
+var spendDollarText = paper.text(pocketBalanceCircle.attr("cx"), pocketBalanceCircle.attr("cy"), "0").attr("font-size", "28");
 spendDollarText.attr({opacity: 0, cursor: "e-resize"});
 spendDollarText.attr("font-family", "Courier New");
 everythingRightOfBudget.push(spendDollarText);
+spendDollarSet.push(spendDollarText);
 
-//this var is temporary, to be deleted
-var button = paper.circle(10,10,20).attr({fill: "#fff"});
+var spendLittleTriangle = paper.image("assets/blacktriangle.svg", pocketBalanceCircle.attr("cx"), pocketBalanceCircle.attr("cy"), 35, 35)
+everythingRightOfBudget.push(spendLittleTriangle);
+spendDollarSet.push(spendLittleTriangle);
+spendDollarSet.hide();
 
 //Below is the third dragging functionality
 //This allows the user to drag the New Pocket Money into the Pocket
@@ -96,19 +102,33 @@ pocketBalanceCircle.drag(movePocketCircle, startPocketCircle, upPocketCircle);
 pocketBalanceText.drag(movePocketCircle, startPocketCircle, upPocketCircle);
 
 littleTriangle.click(function(){
-  spendDollarBubble.animate({r: 25}, 1000, "elastic");
-  spendDollarText.animate({opacity: 1}, 200, "linear");
+  spendDollarSet.show();
+  spendDollarBubble.animate({cx: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, cy: pocketBalanceCircle.attr("cy"), r: 25}, 1000, "elastic");
+  spendDollarText.animate({x: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, y: pocketBalanceCircle.attr("cy"), opacity: 1}, 200, "linear");
+  spendLittleTriangle.animate({x: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, y: pocketBalanceCircle.attr("cy")}, 200, "elastic");
   //var pathStuff = ["M", pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r"), 
   //    pocketBalanceCircle.attr("cy"), "L", spendDollarBubble.attr("cx") - 25, pocketBalanceCircle.attr("cy")].join(",");
   //var lineToSpendBubble = paper.path(pathStuff);
   }
-)
+);
+
+spendLittleTriangle.click(function(){
+  spendLittleTriangle.rotate(180, spendLittleTriangle.attr("x") + 17, spendLittleTriangle.attr("y") + 17);
+  if(spendLittleTriangle.attr("opacity") == 1) {spendLittleTriangle.attr({opacity: .9})}
+  else{spendLittleTriangle.attr({opacity: 1})};
+})
 
 //Drag functionality for spendDollarBubble, allowing the user to adjust the dollar amount by dragging on the bubble
 
   var startSpendDollar = function () {
     // storing original coordinates
-    
+    if(spendLittleTriangle.attr("opacity") < 1){
+      spendDollarBubble.ox = spendDollarBubble.attr("cx");
+      spendDollarBubble.oy = spendDollarBubble.attr("cy");
+      spendDollarText.ox = spendDollarText.attr("x");
+      spendDollarText.oy = spendDollarText.attr("y");
+    }
+    else{
     //Spend Dollar stuff
     spendDollarBubble.r = spendDollarBubble.attr("r")
     spendDollarText.txt = spendDollarText.attr("text")
@@ -120,10 +140,18 @@ littleTriangle.click(function(){
     pocketBalanceText.txt = pocketBalanceText.attr("text");
     littleTriangle.ox = littleTriangle.attr("x");
     littleTriangle.oy = littleTriangle.attr("y");
+    }
   };
 
   var moveSpendDollar = function (dx, dy) {
     // move will be called with dx and dy
+    if(spendLittleTriangle.attr("opacity") < 1){
+      spendDollarBubble.attr({cx: spendDollarBubble.ox + dx, cy: spendDollarBubble.oy + dy});
+      spendDollarText.attr({x: spendDollarText.ox + dx, y: spendDollarText.oy + dy});
+      spendDollarBubble.toFront();
+      spendDollarText.toFront();
+    }
+    else{
     spendDollarBubble.attr({r: Math.min(Math.max(spendDollarBubble.r + dx/6, 25), pocket_balance + 25)});
     spendDollarText.attr({text: Math.round(spendDollarBubble.attr("r") - 25)});
     
@@ -135,43 +163,20 @@ littleTriangle.click(function(){
     //pocketBalanceCircle.attr({cx: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceCircle.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), cy: Math.min(Math.max(pocket_balance*.75, pocketBalanceCircle.oy + dy), 475 - pocket_balance*.75)});
     //pocketBalanceText.attr({x: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceText.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), y: Math.min(Math.max(pocket_balance*.75, pocketBalanceText.oy + dy), 475 - pocket_balance*.75)});
     //littleTriangle.attr({x: Math.min(Math.max(divider.attr("x") + 2*(pocket_balance*.75) - 27, littleTriangle.ox + dx), divider.attr("x") + 400 - 27), y: Math.min(Math.max(pocket_balance*.75, littleTriangle.oy + dy), 475 - pocket_balance*.75)});
+    } 
   };
 
   var upSpendDollar = function (){
+    if(spendLittleTriangle.attr("opacity") < 1 && spendDollarBubble.attr("cx") > divider.attr("x") + 400){
+      spendDollarBubble.animate({opacity: 0}, 400, "linear");
+      spendDollarText.animate({opacity: 0}, 400, "linear");
+      newTransaction(divider.attr("x") + 450, 50, Math.round(spendDollarBubble.attr("r") - 25));
+    }
   };
   
   spendDollarBubble.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
   spendDollarText.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
-  button.click(makeTransaction);
   
     //-------------------------------//
-    
-function makeTransaction(){
-  
-    var startSpendDollar = function () {
-      // storing original coordinates
-      spendDollarBubble.ox = spendDollarBubble.attr("cx");
-      spendDollarBubble.oy = spendDollarBubble.attr("cy");
-      spendDollarText.ox = spendDollarText.attr("x");
-      spendDollarText.oy = spendDollarText.attr("y");
-    };
-
-    var moveSpendDollar = function (dx, dy) {
-      // move will be called with dx and dy
-      spendDollarBubble.attr({cx: spendDollarBubble.ox + dx, cy: spendDollarBubble.oy + dy});
-      spendDollarText.attr({x: spendDollarText.ox + dx, y: spendDollarText.oy + dy});
-      spendDollarBubble.toFront();
-      spendDollarText.toFront();
-    };
-
-    var upSpendDollar = function (){
-      if(spendDollarBubble.attr("cx") > divider.attr("x") + 400){
-        spendDollarBubble.animate({opacity: 0}, 400, "linear");
-        spendDollarText.animate({opacity: 0}, 400, "linear");
-        newTransaction(divider.attr("x") + 450, 50, Math.round(spendDollarBubble.attr("r") - 25));
-        }
-    };
-      //spendDollarBubble.drag(moveSpendToTrans, startSpendToTrans, upSpendToTrans);
-      //spendDollarText.drag(moveSpendToTrans, startSpendToTrans, upSpendToTrans);
- };   
+       
 }
