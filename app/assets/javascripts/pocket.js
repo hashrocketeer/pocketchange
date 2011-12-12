@@ -117,8 +117,14 @@ littleTriangle.click(function(){
 
 spendLittleTriangle.click(function(){
   spendLittleTriangle.rotate(180, spendLittleTriangle.attr("x") + 17, spendLittleTriangle.attr("y") + 17);
-  if(spendLittleTriangle.attr("opacity") == 1) {spendLittleTriangle.attr({opacity: .9})}
-  else{spendLittleTriangle.attr({opacity: 1})};
+  if(spendLittleTriangle.attr("opacity") == 1) {
+    spendLittleTriangle.attr({opacity: .9});
+    spendDollarBubble.attr({fill: "#fff", cursor: "move"});
+  }
+  else{
+    spendLittleTriangle.attr({opacity: 1});
+    spendDollarBubble.attr({fill: "#999", cursor: "e-resize"})
+  };
 })
 
 //Drag functionality for spendDollarBubble, allowing the user to adjust the dollar amount by dragging on the bubble
@@ -130,6 +136,8 @@ spendLittleTriangle.click(function(){
       spendDollarBubble.oy = spendDollarBubble.attr("cy");
       spendDollarText.ox = spendDollarText.attr("x");
       spendDollarText.oy = spendDollarText.attr("y");
+      centsBubble.ox = centsBubble.attr("cx");
+      centsBubble.oy = centsBubble.attr("cy");
     }
     else{
     //Spend Dollar stuff
@@ -151,8 +159,10 @@ spendLittleTriangle.click(function(){
     if(spendLittleTriangle.attr("opacity") < 1){
       spendDollarBubble.attr({cx: spendDollarBubble.ox + dx, cy: spendDollarBubble.oy + dy});
       spendDollarText.attr({x: spendDollarText.ox + dx, y: spendDollarText.oy + dy});
+      centsBubble.attr({cx: centsBubble.ox + dx, cy: centsBubble.oy + dy});
       spendDollarBubble.toFront();
       spendDollarText.toFront();
+      centsBubble.toFront();
     }
     else{
     spendDollarBubble.attr({r: Math.min(Math.max(spendDollarBubble.r + dx/6, 25), pocket_balance + 25)});
@@ -173,17 +183,46 @@ spendLittleTriangle.click(function(){
     if(spendLittleTriangle.attr("opacity") < 1 && spendDollarBubble.attr("cx") > divider.attr("x") + 400){
       spendDollarBubble.animate({opacity: 0}, 400, "linear");
       spendDollarText.animate({opacity: 0}, 400, "linear");
-      newTransaction(divider.attr("x") + 450, 50, Math.round(spendDollarBubble.attr("r") - 25), category_name);
+      centsBubble.animate({opacity: 0}, 400, "linear");
+      
+      drawTransaction(divider.attr("x") + 450, 50, Math.round(spendDollarBubble.attr("r") - 25), category_name);
+      
+      // Grab the category that just changed
+      var category = categories[order-1];
+
+      // Update the category's pocket balance
+      category.pocket_balance =  pocket_balance - Math.round(spendDollarBubble.attr("r") - 25);
+
+      // Send the updated information to the server
+      sendUpdate(category);
     }
     else{
       centsBubble.show();
       centsBubble.animate({cx: spendDollarBubble.attr("cx") + spendDollarBubble.attr("r"), cy: spendDollarBubble.attr("cy") + 20, r: 10}, 1000, "elastic");
+    };
+  }
+    var sendUpdate = function(category) {
+      // Callback for after the server responds
+      var onSuccess = function(data) {
+        console.log(data);
+      };
+
+      // Our hand-rolled parameter to post
+      // Ends up looking like:
+      //
+      // category[pocket_balance]=123
+      // category[current_balance]=321
+      // ... etc ...
+      var changes = { category: category, _method: 'put' }
+
+      // Post the changes, jQuery-style
+      $.post('/categories/'+category.id, changes, onSuccess, 'json');
     }
-  };
   
   spendDollarBubble.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
   spendDollarText.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
   
-    //-------------------------------//
+  
+    //--------------Adjusting the centsBubble-----------------//
        
 }
