@@ -42,6 +42,10 @@ spendDollarSet.hide();
 var centsBubble = paper.circle(pocketBalanceCircle.attr("cx") + 50, pocketBalanceCircle.attr("cy"), 0).attr({fill: "#999", cursor: "e-resize"});
 centsBubble.hide();
 
+var centsText = paper.text(centsBubble.attr("cx"), centsBubble.attr("cy"), 0).attr("font-size", "18");
+centsText.attr("font-family", "Courier New");
+centsText.hide();
+
 //Below is the third dragging functionality
 //This allows the user to drag the New Pocket Money into the Pocket
 var startPocketCircle = function () {
@@ -115,7 +119,8 @@ littleTriangle.click(function(){
   }
 );
 
-spendLittleTriangle.click(function(){
+//---------This switches the dragging functions for the spend bubble---------------/
+var moveSpendBubbleSwitch = function(){
   spendLittleTriangle.rotate(180, spendLittleTriangle.attr("x") + 17, spendLittleTriangle.attr("y") + 17);
   if(spendLittleTriangle.attr("opacity") == 1) {
     spendLittleTriangle.attr({opacity: .9});
@@ -127,7 +132,10 @@ spendLittleTriangle.click(function(){
     spendDollarBubble.attr({fill: "#999", cursor: "e-resize"});
     centsBubble.attr({fill: "#999", cursor: "e-resize"})
   };
-})
+};
+//----------------------------------------------------------------//
+
+spendLittleTriangle.click(moveSpendBubbleSwitch);
 
 //Drag functionality for spendDollarBubble, allowing the user to adjust the dollar amount by dragging on the bubble
 
@@ -140,6 +148,8 @@ spendLittleTriangle.click(function(){
       spendDollarText.oy = spendDollarText.attr("y");
       centsBubble.ox = centsBubble.attr("cx");
       centsBubble.oy = centsBubble.attr("cy");
+      centsText.ox = centsText.attr("x");
+      centsText.oy = centsText.attr("y");
     }
     else{
     //Spend Dollar stuff
@@ -162,9 +172,11 @@ spendLittleTriangle.click(function(){
       spendDollarBubble.attr({cx: spendDollarBubble.ox + dx, cy: spendDollarBubble.oy + dy});
       spendDollarText.attr({x: spendDollarText.ox + dx, y: spendDollarText.oy + dy});
       centsBubble.attr({cx: centsBubble.ox + dx, cy: centsBubble.oy + dy});
+      centsText.attr({x: centsText.ox + dx, y: centsText.oy + dy});
       spendDollarBubble.toFront();
       spendDollarText.toFront();
       centsBubble.toFront();
+      centsText.toFront();
     }
     else{
     spendDollarBubble.attr({r: Math.min(Math.max(spendDollarBubble.or + dx/6, 25), pocket_balance + 25)});
@@ -186,6 +198,7 @@ spendLittleTriangle.click(function(){
       spendDollarBubble.animate({opacity: 0}, 400, "linear");
       spendDollarText.animate({opacity: 0}, 400, "linear");
       centsBubble.animate({opacity: 0}, 400, "linear");
+      centsText.animate({opacity: 0}, 400, "linear");
       
       drawTransaction(divider.attr("x") + 490, 100, Math.round(spendDollarBubble.attr("r") - 25), category_name);
       
@@ -238,6 +251,7 @@ spendLittleTriangle.click(function(){
     };
     
     var upCents = function(){
+      moveSpendBubbleSwitch()
     };
     
     centsBubble.drag(moveCents, startCents, upCents);
