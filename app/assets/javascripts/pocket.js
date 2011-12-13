@@ -120,10 +120,12 @@ spendLittleTriangle.click(function(){
   if(spendLittleTriangle.attr("opacity") == 1) {
     spendLittleTriangle.attr({opacity: .9});
     spendDollarBubble.attr({fill: "#fff", cursor: "move"});
+    centsBubble.attr({fill: "#fff", cursor: "move"});
   }
   else{
     spendLittleTriangle.attr({opacity: 1});
-    spendDollarBubble.attr({fill: "#999", cursor: "e-resize"})
+    spendDollarBubble.attr({fill: "#999", cursor: "e-resize"});
+    centsBubble.attr({fill: "#999", cursor: "e-resize"})
   };
 })
 
@@ -141,13 +143,13 @@ spendLittleTriangle.click(function(){
     }
     else{
     //Spend Dollar stuff
-    spendDollarBubble.r = spendDollarBubble.attr("r")
+    spendDollarBubble.or = spendDollarBubble.attr("r")
     spendDollarText.txt = spendDollarText.attr("text")
     
     //Pocket Balance stuff
     categoryNameText.ox = categoryNameText.attr("x");
     categoryNameText.oy = categoryNameText.attr("y");
-    pocketBalanceCircle.r = pocketBalanceCircle.attr("r");
+    pocketBalanceCircle.or = pocketBalanceCircle.attr("r");
     pocketBalanceText.txt = pocketBalanceText.attr("text");
     littleTriangle.ox = littleTriangle.attr("x");
     littleTriangle.oy = littleTriangle.attr("y");
@@ -165,11 +167,11 @@ spendLittleTriangle.click(function(){
       centsBubble.toFront();
     }
     else{
-    spendDollarBubble.attr({r: Math.min(Math.max(spendDollarBubble.r + dx/6, 25), pocket_balance + 25)});
+    spendDollarBubble.attr({r: Math.min(Math.max(spendDollarBubble.or + dx/6, 25), pocket_balance + 25)});
     spendDollarText.attr({text: Math.round(spendDollarBubble.attr("r") - 25)});
     
     //Math is not right here. To be fixed!
-    pocketBalanceCircle.attr({r: Math.min(Math.max(pocketBalanceCircle.r - (dx/6), 25), pocket_balance)});
+    pocketBalanceCircle.attr({r: Math.min(Math.max(pocketBalanceCircle.or - (dx/6), 25), pocket_balance)});
     pocketBalanceText.attr({text: Math.min(Math.max(pocket_balance - Math.round(spendDollarBubble.attr("r") - 25), 0), pocket_balance)});
     
     //categoryNameText.attr({x: Math.min(categoryNameText.ox + dx), divider.attr("x") + 400), y: Math.min(Math.max(pocket_balance*.75 - 20, categoryNameText.oy + dy), 475 - pocket_balance*.75 - 20)})
@@ -224,5 +226,20 @@ spendLittleTriangle.click(function(){
   
   
     //--------------Adjusting the centsBubble-----------------//
+    
+    var startCents = function(){
+      //storing original coordinates
+      centsBubble.or = centsBubble.attr("r")
+    };
+    
+    var moveCents = function(dx, dy){
+      //radius and cents text will change just like the dollar bubble
+      centsBubble.attr({r: Math.min(Math.max(centsBubble.or + dx/6, 10), 20)});
+    };
+    
+    var upCents = function(){
+    };
+    
+    centsBubble.drag(moveCents, startCents, upCents);
        
 }
