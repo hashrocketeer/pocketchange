@@ -1,12 +1,14 @@
 
 function drawTransaction(positionX, positionY, transactionAmount, category_name){
   var transAmountText = paper.text(positionX, positionY, transactionAmount).attr({fill: "#fff"});
-  transAmountText.attr("font-size", "23");
+  transAmountText.attr("font-size", "32");
   transAmountText.attr("font-family", "Lucida Grande");
+  transAmountText.attr("text-anchor", "end");
   
   var transCategoryText = paper.text(positionX + 65, positionY, category_name).attr({fill: "#fff"});
   transCategoryText.attr("font-size", "20");
   transCategoryText.attr("font-family", "Lucida Grande");
+  transCategoryText.attr("text-anchor", "start");
   
   var timestamp = Number(new Date()); // current time as number
   

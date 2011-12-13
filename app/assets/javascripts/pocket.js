@@ -3,7 +3,7 @@ function drawPocketBubble(category_name, pocket_balance, order, startingCX, star
 //--------------POCKET-------------------//
 //---------------------------------------//
 
-var categoryNameText = paper.text(startingCX + pocket_balance*.75, startingCY - 20, category_name).attr("font-size", "14");
+var categoryNameText = paper.text(startingCX + pocket_balance, startingCY - 20, category_name).attr("font-size", "14");
 categoryNameText.attr("text-anchor", "start");
 categoryNameText.attr("font-family", "Courier New");
 everythingRightOfBudget.push(categoryNameText);
@@ -15,11 +15,11 @@ pocketBalanceText.animate({opacity: 1}, 400, "easeInOut");
 everythingRightOfBudget.push(pocketBalanceText);
 
 var pocketBalanceCircle = paper.circle(startingCX, startingCY, 0).attr({fill: "#333", stroke: "#CCC", cursor: "move"});
-pocketBalanceCircle.animate({r: Math.max(pocket_balance*.75, 23)}, 1000, "elastic");
+pocketBalanceCircle.animate({r: Math.max(pocket_balance, 23)}, 1000, "elastic");
 pocketBalanceText.toFront();
 everythingRightOfBudget.push(pocketBalanceCircle);
 
-var littleTriangle = paper.image("assets/blacktriangle.svg", startingCX + pocket_balance*.75 - 27, startingCY - 7, 35, 35)
+var littleTriangle = paper.image("assets/blacktriangle.svg", startingCX + pocket_balance - 27, startingCY - 7, 35, 35)
 everythingRightOfBudget.push(littleTriangle);
 
 var spendDollarSet = paper.set();
@@ -55,17 +55,17 @@ var startPocketCircle = function () {
   littleTriangle.ox = littleTriangle.attr("x");
   littleTriangle.oy = littleTriangle.attr("y");
   
-  pocketBalanceCircle.toFront();
-  littleTriangle.toFront();
-  pocketBalanceText.toFront();
+  //pocketBalanceCircle.toFront();
+  //littleTriangle.toFront();
+  //pocketBalanceText.toFront();
 };
 
 var movePocketCircle = function (dx, dy) {
   // move will be called with dx and dy
-  categoryNameText.attr({x: Math.min(Math.max(divider.attr("x") + 2*(pocket_balance*.75), categoryNameText.ox + dx), divider.attr("x") + 400), y: Math.min(Math.max(pocket_balance*.75 - 20, categoryNameText.oy + dy), 475 - pocket_balance*.75 - 20)})
-  pocketBalanceCircle.attr({cx: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceCircle.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), cy: Math.min(Math.max(pocket_balance*.75, pocketBalanceCircle.oy + dy), 475 - pocket_balance*.75)});
-  pocketBalanceText.attr({x: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceText.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), y: Math.min(Math.max(pocket_balance*.75, pocketBalanceText.oy + dy), 475 - pocket_balance*.75)});
-  littleTriangle.attr({x: Math.min(Math.max(divider.attr("x") + 2*(pocket_balance*.75) - 27, littleTriangle.ox + dx), divider.attr("x") + 400 - 27), y: Math.min(Math.max(pocket_balance*.75, littleTriangle.oy + dy), 475 - pocket_balance*.75)});
+  categoryNameText.attr({x: Math.min(Math.max(divider.attr("x") + 2*(pocket_balance), categoryNameText.ox + dx), divider.attr("x") + 400), y: Math.min(Math.max(pocket_balance - 20, categoryNameText.oy + dy), 475 - pocket_balance - 20)})
+  pocketBalanceCircle.attr({cx: Math.min(Math.max(divider.attr("x") + pocket_balance, pocketBalanceCircle.ox + dx), divider.attr("x") + 400 - pocket_balance), cy: Math.min(Math.max(pocket_balance, pocketBalanceCircle.oy + dy), 475 - pocket_balance)});
+  pocketBalanceText.attr({x: Math.min(Math.max(divider.attr("x") + pocket_balance, pocketBalanceText.ox + dx), divider.attr("x") + 400 - pocket_balance), y: Math.min(Math.max(pocket_balance, pocketBalanceText.oy + dy), 475 - pocket_balance)});
+  littleTriangle.attr({x: Math.min(Math.max(divider.attr("x") + 2*(pocket_balance) - 27, littleTriangle.ox + dx), divider.attr("x") + 400 - 27), y: Math.min(Math.max(pocket_balance, littleTriangle.oy + dy), 475 - pocket_balance)});
 };
 
 var upPocketCircle = function (){
@@ -169,7 +169,7 @@ spendLittleTriangle.click(function(){
     spendDollarText.attr({text: Math.round(spendDollarBubble.attr("r") - 25)});
     
     //Math is not right here. To be fixed!
-    pocketBalanceCircle.attr({r: Math.min(Math.max(pocketBalanceCircle.r - (dx/6)*.75, 25), pocket_balance*.75)});
+    pocketBalanceCircle.attr({r: Math.min(Math.max(pocketBalanceCircle.r - (dx/6), 25), pocket_balance)});
     pocketBalanceText.attr({text: Math.min(Math.max(pocket_balance - Math.round(spendDollarBubble.attr("r") - 25), 0), pocket_balance)});
     
     //categoryNameText.attr({x: Math.min(categoryNameText.ox + dx), divider.attr("x") + 400), y: Math.min(Math.max(pocket_balance*.75 - 20, categoryNameText.oy + dy), 475 - pocket_balance*.75 - 20)})
@@ -185,7 +185,7 @@ spendLittleTriangle.click(function(){
       spendDollarText.animate({opacity: 0}, 400, "linear");
       centsBubble.animate({opacity: 0}, 400, "linear");
       
-      drawTransaction(divider.attr("x") + 450, 100, Math.round(spendDollarBubble.attr("r") - 25), category_name);
+      drawTransaction(divider.attr("x") + 490, 100, Math.round(spendDollarBubble.attr("r") - 25), category_name);
       
       // Grab the category that just changed
       var category = categories[order-1];

@@ -1,5 +1,5 @@
 
-<script>var paper = Raphael(0, 0, 3000, 475);
+<script>var paper = Raphael(0, 0, 2000, 475);
   var orderArray = [];
   var everythingRightOfBudget = paper.set();
 </script>
@@ -25,18 +25,15 @@
 <p><%= current_total %> of <%= starting_total %></p>
 
 <script>
-  //currentTotalText.show();
   divider.show();
   divider.glow({width: 25, opacity: .1});
   everythingRightOfBudget.push(divider);
-  
-  bigBorder = paper.rect(0, 0, 3000, 475).attr({opacity: .4});
-  bigBorder.glow({width: 25, opacity: .1});
   
   startingTotalBar.show();
   startingTotalBar.glow({width: 2, opacity: .1});
   currentTotalBar.show();
   
+  //Budget Title
   var budgetTitleRect = paper.rect(divider.attr("x")/2 - 83, 0, 166, 58, 0).attr({fill: "#003300", opacity: .1, stroke: "#003300"});
   budgetTitleRect.glow({width: 4, opacity: .08});
   
@@ -44,6 +41,7 @@
   budgetTitleText.attr("font-family", "Arial");
   budgetTitleText.attr("fill", "#006633");
   
+  //Pocket Background and title
   var pocketBackground = paper.image("assets/graph2.jpg", divider.attr("x"), 0, 400, 500).attr({opacity: 1});
   pocketBackground.toBack();
   everythingRightOfBudget.push(pocketBackground);
@@ -55,6 +53,21 @@
   pocketTitleText.attr("font-family", "Courier New");
   pocketTitleText.attr("font-color", "#333");
   
+  //Change background and title
+  var changeBackground = paper.image("assets/Rock_Texture_condensed.png", divider.attr("x") + 800, 0, 667, 500);
+  
+  var changeBorderBox = paper.rect(divider.attr("x") + 810, 10, 667, 455, 5).attr({stroke: "#ccc"});
+  changeBorderBox.attr("stroke-width", 20);
+  changeBorderBox.glow({width: 20, opacity: .8});
+  
+  var changeTitleRect = paper.rect(divider.attr("x") + 795, 180, 58, 140, 5).attr({fill: "#fff", stroke: "#fff", opacity: .9});
+  changeTitleRect.glow({width: 20, opacity: .6});
+  
+  var changeTitleText = paper.text(divider.attr("x") + 820, 250, "Change!").attr("font-size", "28");
+  changeTitleText.rotate(270, divider.attr("x") + 820, 250)
+  
+  
+  //Transactions background and title
   var transactionsBackground = paper.image("assets/chalkboard_s.png", divider.attr("x") + 400, 0, 400, 500);
   transactionsBackground.glow({width: 10, opacity: .5});
   everythingRightOfBudget.push(transactionsBackground);
@@ -62,9 +75,13 @@
   var transTitleRect = paper.rect(divider.attr("x") + 480, 0, 240, 58).attr({fill: "#330000", stroke: "#330000", opacity: .5});
   transTitleRect.glow({width: 20, opacity: .1});
   
-  var transTitleText = paper.text(divider.attr("x") + 600, 30, "Transactions").attr({fill: "#fff", opacity: .8});
+  var transTitleText = paper.text(divider.attr("x") + 600, 30, "Transactions").attr({fill: "#fff", opacity: 1});
   transTitleText.attr("font-size", "35");
   transTitleText.attr("font-family", "Lucida Grande");
+  
+  //and finally, the big border
+  bigBorder = paper.rect(0, 0, 3000, 475).attr({opacity: .4});
+  bigBorder.glow({width: 25, opacity: .1});
 </script>    
 
 <p><%= link_to 'New Category', new_category_path %></p>
