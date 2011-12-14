@@ -19,7 +19,7 @@ pocketBalanceCircle.animate({r: Math.max(pocket_balance, 23)}, 1000, "elastic");
 pocketBalanceText.toFront();
 everythingRightOfBudget.push(pocketBalanceCircle);
 
-var littleTriangle = paper.image("assets/blacktriangle.svg", startingCX + pocket_balance - 27, startingCY - 7, 35, 35)
+var littleTriangle = paper.image("assets/blacktriangle.svg", startingCX + pocket_balance/2, startingCY + pocket_balance/2, 45, 45)
 everythingRightOfBudget.push(littleTriangle);
 
 var spendDollarSet = paper.set();
@@ -124,13 +124,19 @@ var moveSpendBubbleSwitch = function(){
   spendLittleTriangle.rotate(180, spendLittleTriangle.attr("x") + 17, spendLittleTriangle.attr("y") + 17);
   if(spendLittleTriangle.attr("opacity") == 1) {
     spendLittleTriangle.attr({opacity: .9});
-    spendDollarBubble.attr({fill: "#fff", cursor: "move"});
-    centsBubble.attr({fill: "#fff", cursor: "move"});
+    spendDollarBubble.animate({fill: "#fff"}, 200, "easeInOut");
+    centsBubble.animate({fill: "#fff"}, 200, "easeInOut");
+    spendDollarBubble.attr({cursor: "move"});
+    centsBubble.attr({cursor: "move"});
+    spendDollarText.attr({cursor: "move"});
   }
   else{
     spendLittleTriangle.attr({opacity: 1});
-    spendDollarBubble.attr({fill: "#999", cursor: "e-resize"});
-    centsBubble.attr({fill: "#999", cursor: "e-resize"})
+    spendDollarBubble.animate({fill: "#999"}, 200, "easeInOut");
+    centsBubble.animate({fill: "#999"}, 200, "easeInOut");
+    spendDollarBubble.attr({cursor: "e-resize"});
+    centsBubble.attr({cursor: "e-resize"});
+    spendDollarText.attr({cursor: "e-resize"});
   };
 };
 //----------------------------------------------------------------//
@@ -206,7 +212,11 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
       var category = categories[order-1];
 
       // Update the category's pocket balance
+      if(centsBubble.attr("r") > 10){
+      category.pocket_balance =  pocket_balance - Math.round(spendDollarBubble.attr("r") - 25) - 1;
+      }else{
       category.pocket_balance =  pocket_balance - Math.round(spendDollarBubble.attr("r") - 25);
+      };
 
       // Send the updated information to the server
       sendUpdate(category);
@@ -243,11 +253,21 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
     var startCents = function(){
       //storing original coordinates
       centsBubble.or = centsBubble.attr("r")
+      pocketBalanceCircle.or = pocketBalanceCircle.attr("r")
+      pocketBalanceText.txt = pocketBalanceText.attr("text")
     };
     
     var moveCents = function(dx, dy){
       //radius and cents text will change just like the dollar bubble
       centsBubble.attr({r: Math.min(Math.max(centsBubble.or + dx/6, 10), 20)});
+      
+      //one dollar will be subtracted from pocket balance if there's more than 1 cent in the cents bubble
+      if(dx > 1){
+      //pocketBalanceCircle.attr({r: pocketBalanceCircle.or - Math.min(Math.max(centsBubble.or + dx/6, 10), 20)});
+      pocketBalanceText.attr({text: pocket_balance - Math.round(spendDollarBubble.attr("r") - 25) - 1})
+      }else{
+      pocketBalanceText.attr({text: pocket_balance - Math.round(spendDollarBubble.attr("r") - 25)})
+      }
     };
     
     var upCents = function(){
