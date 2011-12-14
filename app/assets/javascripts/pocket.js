@@ -44,6 +44,7 @@ centsBubble.hide();
 
 var centsText = paper.text(centsBubble.attr("cx"), centsBubble.attr("cy"), 0).attr("font-size", "18");
 centsText.attr("font-family", "Courier New");
+centsText.attr({opacity: 0});
 centsText.hide();
 
 //Below is the third dragging functionality
@@ -111,7 +112,7 @@ pocketBalanceText.drag(movePocketCircle, startPocketCircle, upPocketCircle);
 littleTriangle.click(function(){
   spendDollarSet.show();
   spendDollarBubble.animate({cx: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, cy: pocketBalanceCircle.attr("cy"), r: 25}, 1000, "elastic");
-  spendDollarText.animate({x: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, y: pocketBalanceCircle.attr("cy"), opacity: 1}, 200, "linear");
+  spendDollarText.animate({x: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, y: pocketBalanceCircle.attr("cy"), opacity: 1}, 1000, "elastic");
   spendLittleTriangle.animate({x: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, y: pocketBalanceCircle.attr("cy")}, 200, "elastic");
   //var pathStuff = ["M", pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r"), 
   //    pocketBalanceCircle.attr("cy"), "L", spendDollarBubble.attr("cx") - 25, pocketBalanceCircle.attr("cy")].join(",");
@@ -201,6 +202,7 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
 
   var upSpendDollar = function (){
     if(spendLittleTriangle.attr("opacity") < 1 && spendDollarBubble.attr("cx") > divider.attr("x") + 400){
+      //This is where the spend bubble and cents bubble fade out and the transaction is recorded
       spendDollarBubble.animate({opacity: 0}, 400, "linear");
       spendDollarText.animate({opacity: 0}, 400, "linear");
       centsBubble.animate({opacity: 0}, 400, "linear");
@@ -222,8 +224,11 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
       sendUpdate(category);
     }
     else{
+      //cents bubble pops up so the user can adjust it
       centsBubble.show();
       centsBubble.animate({cx: spendDollarBubble.attr("cx") + spendDollarBubble.attr("r"), cy: spendDollarBubble.attr("cy") + 20, r: 10}, 1000, "elastic");
+      centsText.show();
+      centsText.animate({x: spendDollarBubble.attr("cx") + spendDollarBubble.attr("r"), y: spendDollarBubble.attr("cy") + 20, opacity: 1}, 1000, "elastic");
     };
   }
     var sendUpdate = function(category) {
@@ -248,7 +253,7 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
   spendDollarText.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
   
   
-    //--------------Adjusting the centsBubble-----------------//
+    //-------------Adjusting the centsBubble-----------------//
     
     var startCents = function(){
       //storing original coordinates
@@ -259,10 +264,12 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
     
     var moveCents = function(dx, dy){
       //radius and cents text will change just like the dollar bubble
+      if(pocket_balance - Math.round(spendDollarBubble.attr("r") - 25) > 0){
       centsBubble.attr({r: Math.min(Math.max(centsBubble.or + dx/6, 10), 20)});
+      };
       
       //one dollar will be subtracted from pocket balance if there's more than 1 cent in the cents bubble
-      if(dx > 1){
+      if(dx > 1 && pocket_balance - Math.round(spendDollarBubble.attr("r") - 25) > 0){
       //pocketBalanceCircle.attr({r: pocketBalanceCircle.or - Math.min(Math.max(centsBubble.or + dx/6, 10), 20)});
       pocketBalanceText.attr({text: pocket_balance - Math.round(spendDollarBubble.attr("r") - 25) - 1})
       }else{
@@ -275,5 +282,7 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
     };
     
     centsBubble.drag(moveCents, startCents, upCents);
-       
+    
+    //------------------------------------------------------//
+      
 }
