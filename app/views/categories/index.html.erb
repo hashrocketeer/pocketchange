@@ -64,8 +64,9 @@
   changeTitleRect.glow({width: 20, opacity: .6});
   
   var changeTitleText = paper.text(divider.attr("x") + 820, 250, "Change!").attr("font-size", "28");
-  changeTitleText.rotate(270, divider.attr("x") + 820, 250)
+  changeTitleText.rotate(270, divider.attr("x") + 820, 250);
   
+  drawChange(0);
   
   //Transactions background and title
   var transactionsBackground = paper.image("assets/chalkboard_s.png", divider.attr("x") + 400, 0, 400, 500);

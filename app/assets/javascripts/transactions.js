@@ -1,6 +1,6 @@
 
 function drawTransaction(positionX, positionY, transactionAmount, category_name){
-  var transAmountText = paper.text(positionX, positionY, transactionAmount).attr({fill: "#fff"});
+  var transAmountText = paper.text(positionX, positionY, transactionAmount.toFixed(2)).attr({fill: "#fff"});
   transAmountText.attr("font-size", "32");
   transAmountText.attr("font-family", "Lucida Grande");
   transAmountText.attr("text-anchor", "end");

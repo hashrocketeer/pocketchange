@@ -48,7 +48,7 @@ centsText.attr({opacity: 0});
 centsText.hide();
 
 //Below is the third dragging functionality
-//This allows the user to drag the New Pocket Money into the Pocket
+//This allows the user to move the pocket bubble around
 var startPocketCircle = function () {
   // storing original coordinates
   categoryNameText.ox = categoryNameText.attr("x");
@@ -109,14 +109,13 @@ var upPocketCircle = function (){
 pocketBalanceCircle.drag(movePocketCircle, startPocketCircle, upPocketCircle);
 pocketBalanceText.drag(movePocketCircle, startPocketCircle, upPocketCircle);
 
+
+//--------------------This makes the spend bubble pop up-----------------------------//
 littleTriangle.click(function(){
   spendDollarSet.show();
   spendDollarBubble.animate({cx: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, cy: pocketBalanceCircle.attr("cy"), r: 25}, 1000, "elastic");
   spendDollarText.animate({x: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, y: pocketBalanceCircle.attr("cy"), opacity: 1}, 1000, "elastic");
   spendLittleTriangle.animate({x: pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r") + 35, y: pocketBalanceCircle.attr("cy")}, 200, "elastic");
-  //var pathStuff = ["M", pocketBalanceCircle.attr("cx") + pocketBalanceCircle.attr("r"), 
-  //    pocketBalanceCircle.attr("cy"), "L", spendDollarBubble.attr("cx") - 25, pocketBalanceCircle.attr("cy")].join(",");
-  //var lineToSpendBubble = paper.path(pathStuff);
   }
 );
 
@@ -144,7 +143,10 @@ var moveSpendBubbleSwitch = function(){
 
 spendLittleTriangle.click(moveSpendBubbleSwitch);
 
+//----------------------------------------------------------------//
+
 //Drag functionality for spendDollarBubble, allowing the user to adjust the dollar amount by dragging on the bubble
+//if else statements determine if the spend bubble is in moving mode (if) or adjusting mode (else)
 
   var startSpendDollar = function () {
     // storing original coordinates
@@ -157,6 +159,14 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
       centsBubble.oy = centsBubble.attr("cy");
       centsText.ox = centsText.attr("x");
       centsText.oy = centsText.attr("y");
+      spendLittleTriangle.ox = spendLittleTriangle.attr("x");
+      spendLittleTriangle.oy = spendLittleTriangle.attr("y");  
+      
+      spendDollarBubble.toFront();
+      spendDollarText.toFront();
+      centsBubble.toFront();
+      centsText.toFront();
+      spendLittleTriangle.toFront();    
     }
     else{
     //Spend Dollar stuff
@@ -180,10 +190,12 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
       spendDollarText.attr({x: spendDollarText.ox + dx, y: spendDollarText.oy + dy});
       centsBubble.attr({cx: centsBubble.ox + dx, cy: centsBubble.oy + dy});
       centsText.attr({x: centsText.ox + dx, y: centsText.oy + dy});
-      spendDollarBubble.toFront();
-      spendDollarText.toFront();
-      centsBubble.toFront();
-      centsText.toFront();
+      spendLittleTriangle.attr({x: spendLittleTriangle.ox - dx, y: spendLittleTriangle.oy - dy});
+      //spendDollarBubble.toFront();
+      //spendDollarText.toFront();
+      //centsBubble.toFront();
+      //centsText.toFront();
+      //spendLittleTriangle.toFront();
     }
     else{
     spendDollarBubble.attr({r: Math.min(Math.max(spendDollarBubble.or + dx/6, 25), pocket_balance + 25)});
@@ -192,11 +204,11 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
     //Math is not right here. To be fixed!
     pocketBalanceCircle.attr({r: Math.min(Math.max(pocketBalanceCircle.or - (dx/6), 25), pocket_balance)});
     pocketBalanceText.attr({text: Math.min(Math.max(pocket_balance - Math.round(spendDollarBubble.attr("r") - 25), 0), pocket_balance)});
-    
+
     //categoryNameText.attr({x: Math.min(categoryNameText.ox + dx), divider.attr("x") + 400), y: Math.min(Math.max(pocket_balance*.75 - 20, categoryNameText.oy + dy), 475 - pocket_balance*.75 - 20)})
     //pocketBalanceCircle.attr({cx: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceCircle.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), cy: Math.min(Math.max(pocket_balance*.75, pocketBalanceCircle.oy + dy), 475 - pocket_balance*.75)});
     //pocketBalanceText.attr({x: Math.min(Math.max(divider.attr("x") + pocket_balance*.75, pocketBalanceText.ox + dx), divider.attr("x") + 400 - pocket_balance*.75), y: Math.min(Math.max(pocket_balance*.75, pocketBalanceText.oy + dy), 475 - pocket_balance*.75)});
-    //littleTriangle.attr({x: Math.min(Math.max(divider.attr("x") + 2*(pocket_balance*.75) - 27, littleTriangle.ox + dx), divider.attr("x") + 400 - 27), y: Math.min(Math.max(pocket_balance*.75, littleTriangle.oy + dy), 475 - pocket_balance*.75)});
+    //littleTriangle.attr({x: littleTriangle.ox + pocketBalanceCircle.attr("r") + 35, y: littleTriangle.oy + pocketBalanceCircle.attr("r")});
     } 
   };
 
@@ -209,9 +221,10 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
       spendDollarText.animate({opacity: 0}, 400, "linear");
       centsBubble.animate({opacity: 0}, 400, "linear");
       centsText.animate({opacity: 0}, 400, "linear");
+      spendLittleTriangle.animate({opacity: 0}, 400, "linear");
       
       //This passes the data to the transactions javascript function
-      drawTransaction(divider.attr("x") + 510, 100, Math.round(spendDollarBubble.attr("r") - 25) + Math.round(Math.min(Math.max(centsBubble.attr("r"), 10), 19.9)*10 - 100)/100, category_name);
+      drawTransaction(divider.attr("x") + 520, 100, Math.round(spendDollarBubble.attr("r") - 25) + Math.round(Math.min(Math.max(centsBubble.attr("r"), 10), 19.9)*10 - 100)/100, category_name);
       
       
       //=============Updating the database=================//
@@ -263,7 +276,7 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
   spendDollarText.drag(moveSpendDollar, startSpendDollar, upSpendDollar);
   
   
-    //-------------Adjusting the centsBubble-----------------//
+    //-----------/--Adjusting the centsBubble--\---------------//
     
     var startCents = function(){
       //storing original coordinates
@@ -292,7 +305,8 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
     };
     
     centsBubble.drag(moveCents, startCents, upCents);
+    centsText.drag(moveCents, startCents, upCents);
     
-    //------------------------------------------------------//
+    //--------------------end cents bubble adjusting--------------------------------//
       
 }
