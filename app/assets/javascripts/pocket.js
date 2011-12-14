@@ -1,4 +1,4 @@
-function drawPocketBubble(category_name, pocket_balance, order, startingCX, startingCY, newOrExisting){
+function drawPocketBubble(category_name, pocket_balance, order, startingCX, startingCY, change_total){
 //----------------------------------------//
 //--------------POCKET-------------------//
 //---------------------------------------//
@@ -224,7 +224,7 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
       spendLittleTriangle.animate({opacity: 0}, 400, "linear");
       
       //This passes the data to the transactions javascript function
-      drawTransaction(divider.attr("x") + 520, 100, Math.round(spendDollarBubble.attr("r") - 25) + Math.round(Math.min(Math.max(centsBubble.attr("r"), 10), 19.9)*10 - 100)/100, category_name);
+      drawTransaction(divider.attr("x") + 520, 100, Math.round(spendDollarBubble.attr("r") - 25) + Math.round(Math.min(Math.max(centsBubble.attr("r"), 10), 19.9)*10 - 100)/100, category_name, change_total);
       
       
       //=============Updating the database=================//

@@ -6,9 +6,11 @@
 <div id="text">
 <% current_total = 0 %>
 <% starting_total = 0 %>
+<% change_total = 0 %>
 <% @categories.each do |category| %>
   <% current_total = current_total + category.current_balance %>
   <% starting_total = starting_total + category.starting_balance %>
+  <% change_total = change_total + category.change_balance %>
   <%= link_to 'Edit' , edit_category_path(category) %>
   <%= link_to 'Destroy', category, :confirm => 'Are you sure?', :method => :delete %>
   <script>
@@ -19,7 +21,7 @@
 
 <% @categories.each do |pocket_bubble| %>
   <script>
-    if(<%= pocket_bubble.pocket_balance %> > 0){drawPocketBubble('<%= pocket_bubble.cat_name %>', <%= pocket_bubble.pocket_balance %>, <%= pocket_bubble.graph_position_number %>, <%= pocket_bubble.pocket_x %>, <%= pocket_bubble.pocket_y %>);}
+    if(<%= pocket_bubble.pocket_balance %> > 0){drawPocketBubble('<%= pocket_bubble.cat_name %>', <%= pocket_bubble.pocket_balance %>, <%= pocket_bubble.graph_position_number %>, <%= pocket_bubble.pocket_x %>, <%= pocket_bubble.pocket_y %>, <%= change_total %>);}
   </script>
 <% end %>
 <p><%= current_total %> of <%= starting_total %></p>
@@ -66,7 +68,8 @@
   var changeTitleText = paper.text(divider.attr("x") + 820, 250, "Change!").attr("font-size", "28");
   changeTitleText.rotate(270, divider.attr("x") + 820, 250);
   
-  drawChange(0);
+  //This shows the current change balance
+  //drawChange(<%= change_total %>/100);
   
   //Transactions background and title
   var transactionsBackground = paper.image("assets/chalkboard_s.png", divider.attr("x") + 400, 0, 400, 500);
