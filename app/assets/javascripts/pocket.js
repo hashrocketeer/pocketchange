@@ -242,14 +242,14 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
       sendUpdate(category);
       //=================================================//
       
-      
     }
     else{
       //cents bubble pops up so the user can adjust it
-      centsBubble.show();
+      if(spendLittleTriangle.attr("opacity") == 1 && centsBubble.attr("r") < 10){centsBubble.show();
       centsBubble.animate({cx: spendDollarBubble.attr("cx") + spendDollarBubble.attr("r"), cy: spendDollarBubble.attr("cy") + 20, r: 10}, 1000, "elastic");
       centsText.show();
       centsText.animate({x: spendDollarBubble.attr("cx") + spendDollarBubble.attr("r"), y: spendDollarBubble.attr("cy") + 20, opacity: 1}, 1000, "elastic");
+      }
     };
   }
     //=============function that updates the database=================//

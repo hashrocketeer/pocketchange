@@ -16,7 +16,7 @@ function drawTransaction(positionX, positionY, transactionAmount, category_name,
   var changeAmountToAdd = Math.round(transactionAmount) - transactionAmount;
   if(changeAmountToAdd < 0){changeAmountToAdd = changeAmountToAdd + 1};
   
-  drawChange(change_total + (changeAmountToAdd*100))
+  updateChange(change_total + (changeAmountToAdd*100))
   
   //var transTimestampText = paper.text(positionX + 165, positionY, timestamp).attr({fill: "#fff"});
   //transTimestampText.attr("font-size", "20");

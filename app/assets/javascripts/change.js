@@ -1,4 +1,11 @@
+var changeText;
+
 function drawChange(ChangeAmount){
-  var changeText = paper.text(divider.attr("x") + 1200, 225, ChangeAmount.toFixed(2)/100);
-  changeText.attr("font-size", "50")
+  changeText = paper.text(divider.attr("x") + 800 + 667/2, 475/2 - 15, (ChangeAmount/100).toFixed(2));
+  changeText.attr("font-size", "50");
+  changeText.attr({fill: "#fff"});
 };
+
+function updateChange(addChangeAmount){
+  changeText.attr({text: (addChangeAmount/100).toFixed(2)})
+}
