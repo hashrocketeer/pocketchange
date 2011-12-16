@@ -23,11 +23,15 @@
 //   //transTimestampText.attr("font-family", "Lucida Grande");
 // };
 
+var offset = 0;
 
 function drawTransaction(transaction, category) {
 	var x = divider.attr("x") + 520;
-  var y = 100;
-  var transAmountText = paper.text(x, y, transaction.trans_amount).attr({fill: "#fff"});
+  var y = (30 * offset) + 100;
+  offset += 1;
+  var amount = parseFloat(transaction.trans_amount, 10);
+  console.log(amount)
+  var transAmountText = paper.text(x, y, amount.toFixed(2)).attr({fill: "#fff"});
   transAmountText.attr("font-size", "32");
   transAmountText.attr("font-family", "Lucida Grande");
   transAmountText.attr("text-anchor", "end");

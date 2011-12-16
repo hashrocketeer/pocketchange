@@ -185,14 +185,3 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
   pMoneyAmount.drag(moveP, startP, upP);
   
 }
-
-
-$(function(){
-	//   window.transactions = [];
-	//   $.getJSON('/transactions', function(data){
-	// transactions = data;
-	// transactions.each(function {
-	// 	
-	// });
-	//   });
-});

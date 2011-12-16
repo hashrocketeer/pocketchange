@@ -2,6 +2,7 @@ Pocketchange::Application.routes.draw do
   resources :categories do
     resources :transactions
   end
+  get "transactions" => "transactions#index"
   
   get "home/index"
   

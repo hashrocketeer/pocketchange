@@ -92,6 +92,16 @@
   //and finally, the big border
   bigBorder = paper.rect(0, 0, 3000, 475).attr({opacity: .4});
   bigBorder.glow({width: 25, opacity: .1});
+
+
+  window.transactions = [];
+  $.getJSON('/transactions', function(data){
+    transactions = data;
+    $.each(transactions, function(_, transaction) {
+       drawTransaction(transaction, {});
+     });
+   });
+
 </script>    
 
 <p><%= link_to 'New Category', new_category_path %></p>
