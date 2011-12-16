@@ -65,11 +65,14 @@
   //var changeDisplayBubble = paper.circle(divider.attr("x") + 800 + 667/2, 475/2, 130).attr({fill: "#fff", stroke: "#669933", opacity: .8});
   //changeDisplayBubble.glow({width: 5, opacity: .3});
   
-  var changeTitleRect = paper.rect(divider.attr("x") + 795, 180, 58, 140, 5).attr({fill: "#fff", stroke: "#fff", opacity: .9});
+  var changeTitleRect = paper.rect(divider.attr("x") + 795, 80, 58, 140, 5).attr({fill: "#fff", stroke: "#fff", opacity: .9});
   changeTitleRect.glow({width: 20, opacity: .6});
   
-  var changeTitleText = paper.text(divider.attr("x") + 820, 250, "Change!").attr("font-size", "28");
-  changeTitleText.rotate(270, divider.attr("x") + 820, 250);
+  var changeTitleText = paper.text(divider.attr("x") + 820, 150, "Change!").attr("font-size", "28");
+  changeTitleText.rotate(270, divider.attr("x") + 820, 150);
+  
+  var changeLittleBox = paper.rect(divider.attr("x") + 800 + 667/2 - 75, 475/2 - 50, 150, 75, 20).attr({fill: "#cc9900", stroke: "#333", opacity: .7});
+  changeLittleBox.glow({width: 10, opacity: .7});
   
   //This shows the current change balance
   drawChange(<%= change_total %>);

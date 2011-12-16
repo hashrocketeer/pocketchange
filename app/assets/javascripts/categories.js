@@ -18,8 +18,6 @@ function drawCategory(category_name, starting_balance, current_balance, pocket_b
   divider = paper.rect(order*75 + 125, 0, 1, 500).attr({opacity: .4});
   divider.hide();
   
-  
-  
   //--------------------------------------//	
   //These are the 5 bars: Starting Balance, Current Balance, New Pocket Money, Starting Total, Current Total
   //Starting Balance is static (for now)
