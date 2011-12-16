@@ -213,7 +213,7 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
   };
 
   var upSpendDollar = function (){
-    
+	
     //If statement to determine if the spend bubble has been dragged to the transactions area
     if(spendDollarBubble.attr("cx") > divider.attr("x") + 400){
       //This is where the spend bubble and cents bubble fade out and the transaction is recorded
@@ -224,12 +224,28 @@ spendLittleTriangle.click(moveSpendBubbleSwitch);
       spendLittleTriangle.animate({opacity: 0}, 400, "linear");
       
       //This passes the data to the transactions javascript function
-      drawTransaction(divider.attr("x") + 520, 100, Math.round(spendDollarBubble.attr("r") - 25) + Math.round(Math.min(Math.max(centsBubble.attr("r"), 10), 19.9)*10 - 100)/100, category_name, order, change_total);
+
+      var dollarAndCentAmount = Math.round(spendDollarBubble.attr("r") - 25) + Math.round(Math.min(Math.max(centsBubble.attr("r"), 10), 19.9)*10 - 100)/100;
+
+      var category = categories[order-1];
+      var transaction = {
+	      trans_amount: dollarAndCentAmount
+      };
+
+      drawTransaction(transaction, category);
       
       
       //=============Updating the database=================//
       // Grab the category that just changed
-      var category = categories[order-1];
+    
+
+	  var onSuccess = function(){
+	    console.log("Success!")	
+	  };
+
+	  // Create on the server
+	  $.post('/categories/'+category.id+'/transactions', { transaction: transaction }, onSuccess, 'json');
+
 
       // Update the category's pocket balance
       if(centsBubble.attr("r") > 10){

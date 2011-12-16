@@ -8,8 +8,8 @@ function drawChange(ChangeAmount){
   changeText.attr({fill: "#fff"});
 };
 
-function updateChange(addChangeAmount, order){
-  changeText.attr({text: (addChangeAmount/100).toFixed(2)});
+function updateChange(amount){
+  changeText.attr({text: amount});
   
   //=============Updating the database=================//
   // Grab the category that just changed
